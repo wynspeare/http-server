@@ -1,29 +1,41 @@
 package server;
 
+        import java.io.IOException;
+        import java.net.ServerSocket;
+
 public class HTTPServer {
-    private SocketWrapper socket;
+    private static ServerSocket serverSocket;
 
-    public HTTPServer(SocketWrapper socket) {
-        this.socket = socket;
-    }
-
-    public void start(int port) {
-        try {
-            socket.createAndListen(port);
-
-            String clientMessage;
-            while ((clientMessage = socket.receiveData()) != null) {
-                System.out.println("Client message received by server: " + clientMessage);
-                socket.sendData(clientMessage);
-            }
-        } finally {
-            socket.close();
-        }
+    public HTTPServer(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
     public static void main(String[] args) {
-        ServerSocketWrapper serverWrapper = new ServerSocketWrapper();
-        HTTPServer server = new HTTPServer(serverWrapper);
-        server.start(4242);
+        start(5000);
+        HTTPServer server = new HTTPServer(serverSocket);
+        server.serve();
+    }
+
+    public static void start(int port) {
+        try {
+            serverSocket = new ServerSocket(port);
+            System.out.println("Awaiting connection");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Runnable createRunnable(SocketWrapper serverWrapper) {
+        serverWrapper.acceptConnection(serverSocket);
+        return new ServerRunnable(serverWrapper);
+    }
+
+    public void serve() {
+        while (!serverSocket.isClosed()) {
+            ServerSocketWrapper serverWrapper = new ServerSocketWrapper();
+
+            Thread thread = new Thread(createRunnable(serverWrapper));
+            thread.start();
+        }
     }
 }

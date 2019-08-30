@@ -11,8 +11,14 @@ public class Client {
         client.create(port);
         String messageToSend;
         while ((messageToSend = client.getUserInput()) != null) {
-            client.sendData(messageToSend);
-            client.receiveData();
+            if (messageToSend.toLowerCase().trim().equals("close")) {
+                System.out.println("Closing Client");
+                client.sendData(messageToSend);
+                break;
+            } else {
+                client.sendData(messageToSend);
+                client.receiveData();
+            }
         }
         client.close();
     }
@@ -20,6 +26,6 @@ public class Client {
     public static void main(String[] args) {
         ClientSocketWrapper clientWrapper = new ClientSocketWrapper();
         Client client = new Client(clientWrapper);
-        client.start(4242);
+        client.start(5000);
     }
 }

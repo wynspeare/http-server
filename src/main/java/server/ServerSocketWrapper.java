@@ -7,23 +7,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerSocketWrapper implements SocketWrapper {
-    private ServerSocket serverSocket;
-    private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
-    private String clientMessage;
 
-    public void createAndListen(int port) {
+    public void acceptConnection(ServerSocket serverSocket) {
         try {
-            serverSocket = new ServerSocket(port);
-            System.out.println("Awaiting connection");
-
-            socket = serverSocket.accept();
+            Socket socket = serverSocket.accept();
             System.out.println("Accepted connection");
-
             input = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -31,7 +25,7 @@ public class ServerSocketWrapper implements SocketWrapper {
 
     public String receiveData() {
         try {
-            clientMessage = input.readLine();
+            String clientMessage = input.readLine();
             return clientMessage;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -47,11 +41,8 @@ public class ServerSocketWrapper implements SocketWrapper {
         try {
             output.close();
             input.close();
-            socket.close();
-            serverSocket.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 }
-
