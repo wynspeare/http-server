@@ -1,1 +1,8 @@
+os: osx
 language: java
+jdk: openjdk11
+
+script:
+  - "./gradlew test"
+  - java -jar build/libs/HTTPServer-1.0-SNAPSHOT.jar &
+  - "./acceptance-tests.sh"
