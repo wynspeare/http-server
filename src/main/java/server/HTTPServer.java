@@ -1,7 +1,7 @@
 package server;
 
-        import java.io.IOException;
-        import java.net.ServerSocket;
+import java.io.IOException;
+import java.net.ServerSocket;
 
 public class HTTPServer {
     private static ServerSocket serverSocket;
