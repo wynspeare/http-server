@@ -26,4 +26,11 @@ public class RequestTest {
     assertEquals("HTTP/1.1", request.getRequestVersion());
   }
 
+  @Test
+  public void requestTakesInAStatusLineAndCanReturnTheHeaders() {
+    Request request = new Request("GET /simple_get HTTP/1.1");
+
+    assertEquals("HTTP/1.1", request.getRequestVersion());
+  }
+
 }
