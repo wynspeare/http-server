@@ -1,48 +1,24 @@
 package server;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerSocketWrapper implements SocketWrapper {
-    private BufferedReader input;
-    private PrintWriter output;
+public class ServerSocketWrapper implements IServerSocketWrapper {
+    private ServerSocket serverSocket;
 
-    public void acceptConnection(ServerSocket serverSocket) {
-        try {
-            Socket socket = serverSocket.accept();
-            System.out.println("Accepted connection");
-            input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream(), true);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    public ServerSocketWrapper(int port) throws IOException {
+        this.serverSocket = new ServerSocket(port);
+        System.out.println("Awaiting connection");
     }
 
-    public String receiveData() {
-        try {
-            String clientMessage = input.readLine();
-            return clientMessage;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
+    public ISocketWrapper acceptConnection() throws IOException {
+        Socket socket = serverSocket.accept();
+        System.out.println("Accepted connection");
+        return new SocketWrapper(socket);
     }
 
-    public void sendData(String data) {
-        output.println(data);
-    }
-
-    public void close() {
-        try {
-            output.close();
-            input.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    public boolean isClosed() {
+        return serverSocket.isClosed();
     }
 }

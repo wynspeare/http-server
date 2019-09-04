@@ -19,3 +19,4 @@ jar {
         attributes 'Main-Class': 'server.HTTPServer'
     }
 }
+

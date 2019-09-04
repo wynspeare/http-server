@@ -1,9 +1,9 @@
 package client;
 
 public class Client {
-    private ClientWrapper client;
+    private IClientWrapper client;
 
-    public Client(ClientWrapper client) {
+    public Client(IClientWrapper client) {
         this.client = client;
     }
 
@@ -24,7 +24,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        ClientSocketWrapper clientWrapper = new ClientSocketWrapper();
+        ClientWrapper clientWrapper = new ClientWrapper();
         Client client = new Client(clientWrapper);
         client.start(5000);
     }
