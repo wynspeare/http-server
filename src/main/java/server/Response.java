@@ -2,12 +2,12 @@ package server;
 
 public class Response {
   int statusCode;
-  String statusLine;
+  public String statusLine;
 
 
   public void build() {
     statusCode = 200;
-    statusLine = "HTTP/1.1\n" + statusCode + "\nOK\r\n";
+    statusLine = "HTTP/1.1 " + statusCode + " OK\r\n";
   }
 
   public int getStatusCode() {
