@@ -3,11 +3,10 @@ package server.request;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-public class Headers {
+public class ParseHeaders {
 
-  public List<String> splitHeadersFromRequest(String incomingRequest) {
+  public ArrayList<String> splitRequest(String incomingRequest) {
     String[] request = incomingRequest.split("\n");
     ArrayList<String> headers = new ArrayList<String>(Arrays.asList(request));
     headers.remove(0);

@@ -8,11 +8,11 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class HeadersTest {
+public class ParseHeadersTest {
 
   @Test
   public void testHeadersCanBeParsedFromARequest() {
-    Headers headers = new Headers();
+    ParseHeaders parseHeaders = new ParseHeaders();
     String request = "GET /simple_get HTTP/1.1\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +
@@ -27,12 +27,12 @@ public class HeadersTest {
             "Connection: close",
             "Host: 127.0.0.1:5000"));
 
-    assertEquals(expectedHeaders, headers.splitHeadersFromRequest(request));
+    assertEquals(expectedHeaders, parseHeaders.splitRequest(request));
   }
 
   @Test
   public void headersCanBePutIntoKeyValuePairs() {
-    Headers headers = new Headers();
+    ParseHeaders parseHeaders = new ParseHeaders();
 
     ArrayList<String> splitRequest = new ArrayList<String>( Arrays.asList(
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
@@ -48,6 +48,6 @@ public class HeadersTest {
             "Connection", "close",
             "Host", "127.0.0.1:5000");
 
-    assertEquals(expectedHeaders, headers.getHeaderKeyValuePairs(splitRequest));
+    assertEquals(expectedHeaders, parseHeaders.getHeaderKeyValuePairs(splitRequest));
   }
 }

@@ -20,3 +20,18 @@ jar {
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
+
+sourceSets {
+    test {
+        java.srcDir file('src/test')
+        resources.srcDir 'src/test/resources'
+    }
+}
+

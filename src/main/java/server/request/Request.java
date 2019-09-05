@@ -21,8 +21,7 @@ public class Request {
     return incomingRequest.split(" ")[2];
   }
 
-//  public HashMap<String, String> getRequestHeaders(Headers headers) {
-//    headers.splitHeadersFromRequest(incomingRequest);
-//
-//  }
+  public HashMap<String, String> getRequestHeaders(ParseHeaders parseHeaders) {
+    return parseHeaders.getHeaderKeyValuePairs(parseHeaders.splitRequest(incomingRequest));
+  }
 }

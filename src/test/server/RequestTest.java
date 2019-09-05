@@ -2,9 +2,9 @@ package server;
 
 import HTTPcomponents.Methods;
 import org.junit.Test;
+import server.request.ParseHeaders;
 import server.request.Request;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static HTTPcomponents.StatusLineComponents.VERSION;
@@ -44,5 +44,27 @@ public class RequestTest {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals(Methods.GET.toString(), request.getRequestMethod());
+  }
+
+  @Test
+  public void requestCanRetrieveHeaders() {
+    String incomingRequest = "GET /simple_get HTTP/1.1\n" +
+            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+            "Accept: */*\n" +
+            "User-Agent: Ruby\n" +
+            "Connection: close\n" +
+            "Host: 127.0.0.1:5000";
+    Request request = new Request(incomingRequest);
+
+    Map<String, String> expectedHeaders = Map.of(
+            "Accept-Encoding", "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "Accept", "*/*",
+            "User-Agent", "Ruby",
+            "Connection", "close",
+            "Host", "127.0.0.1:5000");
+
+    ParseHeaders parseHeaders = new ParseHeaders();
+
+    assertEquals(expectedHeaders, request.getRequestHeaders(parseHeaders));
   }
 }

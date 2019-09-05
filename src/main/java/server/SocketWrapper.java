@@ -16,25 +16,15 @@ public class SocketWrapper implements ISocketWrapper {
     this.output = new PrintWriter(socket.getOutputStream(), true);
   }
 
-//  public String receiveData() {
-//    try {
-//      String clientMessage = input.readLine();
-//      return clientMessage;
-//    } catch (IOException ex) {
-//      ex.printStackTrace();
-//    }
-//    return "";
-//  }
-
   public String receiveData() {
-    char[] cbuf = new char[100];
+    char[] dataBuffer = new char[100];
     try {
-      String clientMessage = "";
+      String incomingData = "";
       while(input.ready()) {
-        int value = input.read(cbuf);
-        clientMessage += new String(cbuf,0, value);
+        int value = input.read(dataBuffer);
+        incomingData += new String(dataBuffer,0, value);
       }
-      return clientMessage;
+      return incomingData;
     } catch (IOException ex) {
       ex.printStackTrace();
       return ex.toString();

@@ -13,7 +13,6 @@ public class Handler {
 
   public Boolean isGETRequest() {
     if (request.getRequestMethod().equals(Methods.GET.toString())) {
-      System.out.println("GET Request!");
       return true;
     }
     return false;
