@@ -4,6 +4,9 @@ import HTTPcomponents.Methods;
 import org.junit.Test;
 import server.request.Request;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static HTTPcomponents.StatusLineComponents.VERSION;
 import static org.junit.Assert.*;
 
@@ -42,5 +45,4 @@ public class RequestTest {
 
     assertEquals(Methods.GET.toString(), request.getRequestMethod());
   }
-
 }

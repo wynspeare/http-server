@@ -1,5 +1,7 @@
 package server.request;
 
+import java.util.HashMap;
+
 public class Request {
   String incomingRequest;
 
@@ -18,4 +20,9 @@ public class Request {
   public String getRequestVersion() {
     return incomingRequest.split(" ")[2];
   }
+
+//  public HashMap<String, String> getRequestHeaders(Headers headers) {
+//    headers.splitHeadersFromRequest(incomingRequest);
+//
+//  }
 }
