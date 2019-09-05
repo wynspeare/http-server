@@ -1,24 +1,25 @@
 package server;
 
+import HTTPcomponents.StatusCode;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class ResponseTest {
   @Test
-  public void responseCanGetStatusCode() {
+  public void responseCanBuildAStatusLineByTakingInAStatusCode() {
     Response response = new Response();
-    response.build();
+    response.build(StatusCode.OK);
 
-    assertEquals(200, response.getStatusCode());
+    assertEquals("HTTP/1.1 200 OK\r\n", response.getStatusLine());
   }
 
   @Test
-  public void responseCanGetStatusLine() {
+  public void responseCanCheckTheStatusCodeOfABuiltResponse() {
     Response response = new Response();
-    response.build();
+    response.build(StatusCode.OK);
 
-    assertEquals("HTTP/1.1 200 OK\r\n", response.statusLine);
+    assertEquals(200, response.getStatusCode());
   }
 
 }

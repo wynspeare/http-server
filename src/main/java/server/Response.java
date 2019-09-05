@@ -1,16 +1,27 @@
 package server;
 
+import HTTPcomponents.StatusCode;
+
+import static HTTPcomponents.StatusLineComponents.CRLF;
+import static HTTPcomponents.StatusLineComponents.VERSION;
+import static HTTPcomponents.StatusLineComponents.SP;
+
+
 public class Response {
-  int statusCode;
-  public String statusLine;
+  private int statusCode;
+  private String statusLine;
 
 
-  public void build() {
-    statusCode = 200;
-    statusLine = "HTTP/1.1 " + statusCode + " OK\r\n";
+  public void build(StatusCode statusCode) {
+    this.statusCode = statusCode.code;
+    statusLine = VERSION + SP + this.statusCode + SP + statusCode + CRLF;
   }
 
   public int getStatusCode() {
     return statusCode;
+  }
+
+  public String getStatusLine() {
+    return statusLine;
   }
 }
