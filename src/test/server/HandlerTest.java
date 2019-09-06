@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class HandlerTest {
   @Test
-  public void injectedRequestHandlerCanCheckIfRequestIsAGET() {
+  public void handlerChecksIfRequestIsAGET() {
     Request request = new Request("GET /simple_get HTTP/1.1");
     Handler handler = new Handler(request);
 
@@ -16,7 +16,7 @@ public class HandlerTest {
   }
 
   @Test
-  public void requestHandlerCanBuildTheCorrectResponse() {
+  public void handlerBuildsTheCorrectResponseStatusLine() {
     Request request = new Request("GET /simple_get HTTP/1.1");
     Handler handler = new Handler(request);
 

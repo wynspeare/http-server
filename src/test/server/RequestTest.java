@@ -12,42 +12,42 @@ import static org.junit.Assert.*;
 
 public class RequestTest {
   @Test
-  public void requestTakesInAStatusLineAndCanReturnTheHTTPMethod() {
+  public void requestTakesInAStatusLineAndReturnsTheHTTPMethod() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals("GET", request.getRequestMethod());
   }
 
   @Test
-  public void requestTakesInAStatusLineAndCanReturnTheRoute() {
+  public void requestTakesInAStatusLineAndReturnsTheRoute() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals("/simple_get", request.getRequestPath());
   }
 
   @Test
-  public void requestTakesInAStatusLineAndCanReturnTheVersion() {
+  public void requestTakesInAStatusLineAndReturnsVersion() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals("HTTP/1.1", request.getRequestVersion());
   }
 
   @Test
-  public void requestTakesInAStatusLineAndCanGrabTheVersionUsingConstantVariable() {
+  public void requestTakesInAStatusLineAndReturnsVersionUsingConstant() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals(VERSION, request.getRequestVersion());
   }
 
   @Test
-  public void canMatchIncomingRequestToEnumHTTPMethod() {
+  public void requestMatchsIncomingRequestToEnumHTTPMethod() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals(Methods.GET.toString(), request.getRequestMethod());
   }
 
   @Test
-  public void requestCanRetrieveHeaders() {
+  public void requestRetrievesHeadersInMap() {
     String incomingRequest = "GET /simple_get HTTP/1.1\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +

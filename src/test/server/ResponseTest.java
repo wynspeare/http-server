@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class ResponseTest {
   @Test
-  public void responseCanBuildAStatusLineByTakingInAStatusCode() {
+  public void responseBuildsResponseStatusLineWithProvidedStatusCodeFor200() {
     Response response = new Response();
     response.build(StatusCode.OK);
 
