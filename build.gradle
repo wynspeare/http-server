@@ -20,3 +20,16 @@ jar {
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        events "skipped", "passed", "failed"
+    }
+}
+
+sourceSets {
+    test {
+        java.srcDir file('src/test')
+        resources.srcDir 'src/test/resources'
+    }
+}
+

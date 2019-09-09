@@ -17,17 +17,22 @@ public class SocketWrapper implements ISocketWrapper {
   }
 
   public String receiveData() {
+    char[] dataBuffer = new char[100];
     try {
-      String clientMessage = input.readLine();
-      return clientMessage;
+      String incomingData = "";
+      while(input.ready()) {
+        int value = input.read(dataBuffer);
+        incomingData += new String(dataBuffer,0, value);
+      }
+      return incomingData;
     } catch (IOException ex) {
       ex.printStackTrace();
+      return ex.toString();
     }
-    return null;
   }
 
   public void sendData(String data) {
-    output.println(data);
+    output.print(data);
   }
 
   public void close() {
