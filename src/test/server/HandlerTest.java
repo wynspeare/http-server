@@ -23,4 +23,20 @@ public class HandlerTest {
     assertEquals("HTTP/1.1 200 OK\r\n", handler.buildResponse());
   }
 
+  @Test
+  public void handlerChecksIfRequestIsAHEAD() {
+    Request request = new Request("HEAD /simple_get HTTP/1.1");
+    Handler handler = new Handler(request);
+
+    assertTrue(handler.isHEADRequest());
+  }
+
+  @Test
+  public void handlerBuildsTheCorrectResponseStatusLineFromAHeadRequest() {
+    Request request = new Request("HEAD /simple_get HTTP/1.1");
+    Handler handler = new Handler(request);
+
+    assertEquals("HTTP/1.1 200 OK\r\n", handler.buildResponse());
+  }
+
 }

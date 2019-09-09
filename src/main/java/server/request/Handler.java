@@ -12,19 +12,22 @@ public class Handler {
   }
 
   public Boolean isGETRequest() {
-    if (request.getRequestMethod().equals(Methods.GET.toString())) {
-      return true;
-    }
-    return false;
+    return request.getRequestMethod().equals(Methods.GET.toString());
+  }
+
+  public Boolean isHEADRequest() {
+    return request.getRequestMethod().equals(Methods.HEAD.toString());
   }
 
   public String buildResponse() {
-    if (isGETRequest()) {
-      Response response = new Response();
-      response.build(StatusCode.OK);
-      return response.getStatusLine();
+    Response response = new Response();
+    Methods incomingMethod = Methods.valueOf(request.getRequestMethod());
+    switch(incomingMethod) {
+      case GET:
+      case HEAD:
+        response.build(StatusCode.OK);
+        break;
     }
-    return null;
+    return response.getStatusLine();
   }
-
 }
