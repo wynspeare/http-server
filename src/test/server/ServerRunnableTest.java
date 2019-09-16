@@ -1,6 +1,8 @@
 package server;
 
 import org.junit.Test;
+import server.wrappers.SocketWrapperSpy;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -61,7 +63,7 @@ public class ServerRunnableTest {
   }
 
   @Test
-  public void twoRunnablesListensAndRespondForSimpleGet() {
+  public void twoRunnablesListenAndRespondForSimpleGet() {
 
     BufferedReader input = new BufferedReader(
             new StringReader("GET /simple_get HTTP/1.1\n"));

@@ -19,15 +19,11 @@ public class Handler {
     return request.getRequestMethod().equals(Methods.HEAD.toString());
   }
 
-  public String buildResponse() {
+  public Response buildResponse() {
     Response response = new Response();
-    Methods incomingMethod = Methods.valueOf(request.getRequestMethod());
-    switch(incomingMethod) {
-      case GET:
-      case HEAD:
-        response.build(StatusCode.OK);
-        break;
+    if (isGETRequest() || isHEADRequest()) {
+      response.build(StatusCode.OK);
     }
-    return response.getStatusLine();
+    return response;
   }
 }

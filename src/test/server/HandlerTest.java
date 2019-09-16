@@ -19,8 +19,9 @@ public class HandlerTest {
   public void handlerBuildsTheCorrectResponseStatusLine() {
     Request request = new Request("GET /simple_get HTTP/1.1");
     Handler handler = new Handler(request);
+    Response response = handler.buildResponse();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", handler.buildResponse());
+    assertEquals("HTTP/1.1 200 OK\r\n", response.getStatusLine());
   }
 
   @Test
@@ -35,8 +36,8 @@ public class HandlerTest {
   public void handlerBuildsTheCorrectResponseStatusLineFromAHeadRequest() {
     Request request = new Request("HEAD /simple_get HTTP/1.1");
     Handler handler = new Handler(request);
+    Response response = handler.buildResponse();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", handler.buildResponse());
+    assertEquals("HTTP/1.1 200 OK\r\n", response.getStatusLine());
   }
-
 }

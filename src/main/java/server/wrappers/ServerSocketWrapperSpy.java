@@ -1,4 +1,4 @@
-package server;
+package server.wrappers;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
