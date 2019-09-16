@@ -1,4 +1,4 @@
-package server;
+package server.wrappers;
 
 public interface ISocketWrapper {
     String receiveData();

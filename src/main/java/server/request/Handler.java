@@ -12,19 +12,18 @@ public class Handler {
   }
 
   public Boolean isGETRequest() {
-    if (request.getRequestMethod().equals(Methods.GET.toString())) {
-      return true;
-    }
-    return false;
+    return request.getRequestMethod().equals(Methods.GET.toString());
   }
 
-  public String buildResponse() {
-    if (isGETRequest()) {
-      Response response = new Response();
+  public Boolean isHEADRequest() {
+    return request.getRequestMethod().equals(Methods.HEAD.toString());
+  }
+
+  public Response buildResponse() {
+    Response response = new Response();
+    if (isGETRequest() || isHEADRequest()) {
       response.build(StatusCode.OK);
-      return response.getStatusLine();
     }
-    return null;
+    return response;
   }
-
 }
