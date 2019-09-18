@@ -1,6 +1,7 @@
 package server;
 
 import server.wrappers.IServerSocketWrapper;
+import server.wrappers.ISocketWrapper;
 import server.wrappers.ServerSocketWrapper;
 
 import java.io.IOException;
@@ -12,17 +13,23 @@ public class HTTPServer {
         this.serverSocket = serverSocket;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         IServerSocketWrapper serverSocketWrapper = new ServerSocketWrapper(5000);
         HTTPServer server = new HTTPServer(serverSocketWrapper);
         server.serve();
     }
 
-    public Runnable createRunnable() throws IOException {
-        return new ServerRunnable(serverSocket.acceptConnection());
+    public Runnable createRunnable() {
+        ISocketWrapper socket = null;
+        try {
+            socket = serverSocket.acceptConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ServerRunnable(socket);
     }
 
-    public void serve() throws IOException {
+    public void serve() {
         while (!serverSocket.isClosed()) {
             Thread thread = new Thread(createRunnable());
             thread.start();

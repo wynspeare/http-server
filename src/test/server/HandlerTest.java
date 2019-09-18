@@ -4,7 +4,9 @@ import org.junit.Test;
 import server.request.Request;
 import server.request.Handler;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+
 
 public class HandlerTest {
   @Test
