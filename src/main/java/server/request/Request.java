@@ -31,6 +31,7 @@ public class Request {
   }
 
   public String getRequestBody() {
-    return incomingRequest.split(CRLF)[1];
+    return incomingRequest.split(CRLF, 2)[1];
   }
 }
+

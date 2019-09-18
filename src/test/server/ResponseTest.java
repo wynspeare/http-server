@@ -21,4 +21,12 @@ public class ResponseTest {
 
     assertEquals(200, response.getStatusCode());
   }
+
+  @Test
+  public void responseBuildsResponseWithReceivedBody() {
+    Response response = new Response();
+    response.build(StatusCode.OK);
+
+    assertEquals("HTTP/1.1 200 OK\r\n", response.getStatusLine());
+  }
 }
