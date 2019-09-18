@@ -2,7 +2,6 @@ package server;
 
 import HTTPcomponents.Methods;
 import org.junit.Test;
-import server.request.ParseHeaders;
 import server.request.Request;
 
 import java.util.Map;
@@ -40,7 +39,7 @@ public class RequestTest {
   }
 
   @Test
-  public void requestMatchsIncomingRequestToEnumHTTPMethod() {
+  public void requestMatchesIncomingRequestToEnumHTTPMethod() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals(Methods.GET.toString(), request.getRequestMethod());
@@ -63,8 +62,49 @@ public class RequestTest {
             "Connection", "close",
             "Host", "127.0.0.1:5000");
 
-    ParseHeaders parseHeaders = new ParseHeaders();
+    assertEquals(expectedHeaders, request.getRequestHeaders());
+  }
 
-    assertEquals(expectedHeaders, request.getRequestHeaders(parseHeaders));
+  @Test
+  public void requestReceivesAPOSTAndReturnsTheBody() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\n" +
+            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+            "Accept: */*\n" +
+            "User-Agent: Ruby\n" +
+            "Connection: close\n" +
+            "Host: 127.0.0.1:5000\n" +
+            "Content-Length: 9\n" +
+            "Content-Type: application/x-www-form-urlencoded\n" +
+            "\r\n" +
+            "some body";
+    Request request = new Request(incomingRequest);
+
+    assertEquals("some body", request.getRequestBody());
+  }
+
+  @Test
+  public void requestTakesReceivesARequestWithABodyAndReturnsTheHeaders() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\n" +
+            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+            "Accept: */*\n" +
+            "User-Agent: Ruby\n" +
+            "Connection: close\n" +
+            "Host: 127.0.0.1:5000\n" +
+            "Content-Length: 32\n" +
+            "Content-Type: application/x-www-form-urlencoded\n" +
+            "\r\n" +
+            "some body that could be anything";
+    Request request = new Request(incomingRequest);
+
+    Map<String, String> expectedHeaders = Map.of(
+            "Accept-Encoding", "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "Accept", "*/*",
+            "User-Agent", "Ruby",
+            "Connection", "close",
+            "Host", "127.0.0.1:5000",
+            "Content-Length", "32",
+            "Content-Type", "application/x-www-form-urlencoded");
+
+    assertEquals(expectedHeaders, request.getRequestHeaders());
   }
 }

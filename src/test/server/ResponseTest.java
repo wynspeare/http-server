@@ -21,5 +21,4 @@ public class ResponseTest {
 
     assertEquals(200, response.getStatusCode());
   }
-
 }
