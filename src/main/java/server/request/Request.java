@@ -1,5 +1,7 @@
 package server.request;
 
+import HTTPcomponents.Methods;
+
 import java.util.HashMap;
 
 public class Request {
@@ -11,6 +13,10 @@ public class Request {
 
   public String getRequestMethod() {
     return incomingRequest.split(" ")[0];
+  }
+
+  public Methods getMethod() {
+    return Methods.valueOf(getRequestMethod());
   }
 
   public String getRequestPath() {

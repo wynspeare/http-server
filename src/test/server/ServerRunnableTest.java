@@ -87,4 +87,19 @@ public class ServerRunnableTest {
     assertTrue(socketWrapperSpy2.wasCloseCalled());
   }
 
+  @Test
+  public void runnableListensAndRespondsForRedirect() {
+
+    BufferedReader input = new BufferedReader(
+            new StringReader("GET /redirect HTTP/1.1\n"));
+    PrintWriter output = new PrintWriter(new StringWriter(), true);
+    SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    runnable.run();
+
+    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\n", socketWrapperSpy.getSentData());
+    assertTrue(socketWrapperSpy.wasCloseCalled());
+  }
+
 }

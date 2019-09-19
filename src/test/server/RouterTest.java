@@ -35,7 +35,7 @@ public class RouterTest {
     Router router = new Router();
     router.addRoute("GET", "/simple_get");
 
-    assertTrue(router.routes.containsKey(Methods.GET));
+    assertTrue(router.routes.containsKey("/simple_get"));
   }
 
   @Test
