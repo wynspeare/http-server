@@ -17,12 +17,12 @@ public class ServerRunnable implements Runnable {
             if (clientMessage != null) {
                 Request request = new Request(clientMessage);
 
-                // Building router in runnable with hardcoded routes
-                // Will move to HTTPServer and be injected into runnable
+                // Router will be instantiated in HTTPServer and be injected into runnable.
                 Router router = new Router();
                 router.addRoute("GET", "/simple_get");
-//                router.addRoute("HEAD", "/simple_get");
-//                router.addRoute("HEAD", "/get_with_body");
+                router.addRoute("HEAD", "/simple_get");
+                router.addRoute("HEAD", "/get_with_body");
+                router.addRoute("POST", "/echo_body");
                 router.addRoute("GET", "/redirect");
                 router.addRoute("GET", "/test");
 
