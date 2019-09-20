@@ -25,7 +25,7 @@ public class HTTPServer {
     public void serve() throws IOException {
         while (!serverSocket.isClosed()) {
             Thread thread = new Thread(createRunnable());
-            thread.start();
+                thread.start();
         }
     }
 }

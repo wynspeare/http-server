@@ -1,6 +1,10 @@
 package server;
 
 import HTTPcomponents.Methods;
+import server.handlers.GetHandler;
+import server.handlers.IHandler;
+import server.handlers.RedirectHandler;
+import server.request.Request;
 
 import java.util.HashMap;
 
@@ -18,6 +22,15 @@ public class Router {
       methodHandler.put(getMethod(method), getHandler(uri));
       routes.put(uri, methodHandler);
     }
+  }
+
+  public Response handle(Request request) {
+    Response response = new Response();
+    if (isValidURI(request.getRequestPath())) {
+      IHandler handler = routes.get(request.getRequestPath()).get(request.getMethod());
+      response = handler.buildResponse(request);
+    }
+    return response;
   }
 
   public IHandler getHandler(String uri) {

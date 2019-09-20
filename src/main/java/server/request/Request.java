@@ -4,6 +4,8 @@ import HTTPcomponents.Methods;
 
 import java.util.HashMap;
 
+import static HTTPcomponents.StatusLineComponents.CRLF;
+
 public class Request {
   String incomingRequest;
 
@@ -27,7 +29,14 @@ public class Request {
     return incomingRequest.split(" ")[2];
   }
 
-  public HashMap<String, String> getRequestHeaders(ParseHeaders parseHeaders) {
-    return parseHeaders.getHeaderKeyValuePairs(parseHeaders.splitRequest(incomingRequest));
+  public HashMap<String, String> getRequestHeaders() {
+    ParseHeaders parseHeaders = new ParseHeaders();
+
+    String headers = incomingRequest.split(CRLF)[0];
+    return parseHeaders.getHeaderKeyValuePairs(parseHeaders.splitRequest(headers));
+  }
+
+  public String getRequestBody() {
+    return incomingRequest.split(CRLF, 2)[1];
   }
 }

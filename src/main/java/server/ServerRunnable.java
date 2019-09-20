@@ -1,7 +1,6 @@
 package server;
 
 import server.request.Request;
-import server.request.Handler;
 import server.wrappers.ISocketWrapper;
 
 public class ServerRunnable implements Runnable {
@@ -12,27 +11,27 @@ public class ServerRunnable implements Runnable {
     }
 
 
-    public void run( ) {
+    public void run() {
         try {
             String clientMessage = socketWrapper.receiveData();
             if (clientMessage != null) {
                 Request request = new Request(clientMessage);
 
-                // Building router in runnable with hardcoded redirect route
+                // Building router in runnable with hardcoded routes
+                // Will move to HTTPServer and be injected into runnable
                 Router router = new Router();
-                router.addRoute("GET", "/redirect");
                 router.addRoute("GET", "/simple_get");
+//                router.addRoute("HEAD", "/simple_get");
+//                router.addRoute("HEAD", "/get_with_body");
+                router.addRoute("GET", "/redirect");
                 router.addRoute("GET", "/test");
 
 
-                if (router.isValidURI(request.getRequestPath())) {
-                    IHandler handler = router.routes.get(request.getRequestPath()).get(request.getMethod());
+                Response response = router.handle(request);
+                System.out.println("Message received by server: " + clientMessage);
+                System.out.println("RESPONSE: " + response);
+                socketWrapper.sendData(response.getStatusLine());
 
-                    Response response = handler.buildResponse();
-                    System.out.println("Message received by server: " + clientMessage);
-                    System.out.println("RESPONSE: " + response);
-                    socketWrapper.sendData(response.getStatusLine());
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,23 +40,4 @@ public class ServerRunnable implements Runnable {
             socketWrapper.close();
         }
     }
-
-//    public void run( ) {
-//        try {
-//            String clientMessage = socketWrapper.receiveData();
-//            if (clientMessage != null) {
-//                Request request = new Request(clientMessage);
-//                Handler handler = new Handler(request);
-//                Response response = handler.buildResponse();
-//                System.out.println("Message received by server: " + clientMessage);
-//                System.out.println("RESPONSE: " + response);
-//                socketWrapper.sendData(response.getStatusLine());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            System.out.println("Closing Socket!");
-//            socketWrapper.close();
-//        }
-//    }
 }
