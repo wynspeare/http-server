@@ -22,6 +22,10 @@ public class Response {
     statusLine = VERSION + SP + this.statusCode + SP + statusCode + CRLF + body;
   }
 
+  public void addHeaders(String headers) {
+    statusLine += headers + CRLF;
+  }
+
   public int getStatusCode() {
     return statusCode;
   }

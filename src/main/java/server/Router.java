@@ -28,14 +28,14 @@ public class Router {
     if (isValidMethod(method)) {
       // If uri exists add a new method/handler to the list of allowed routes.
       if (!routes.containsKey(uri)) {
-        HashMap<Methods, IHandler> newRoute = new HashMap<>() {{
+        HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
           put(getMethod(method), buildHandler(uri, method));
         }};
 
         addedRoutes.add(newRoute);
         routes.put(uri, addedRoutes);
       } else {
-        HashMap<Methods, IHandler> newRoute = new HashMap<>() {{
+        HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
           put(getMethod(method), buildHandler(uri, method));
         }};
         routes.get(uri).add(newRoute);
@@ -49,9 +49,6 @@ public class Router {
 
       List<HashMap<Methods, IHandler>> allowedMethods = routes.get(request.getRequestPath());
       IHandler handler = getAllowedMethodHandler(allowedMethods, request);
-
-//      IHandler handler = routes.get(request.getRequestPath()).get(request.getMethod());
-
       response = handler.buildResponse(request);
     }
     return response;
