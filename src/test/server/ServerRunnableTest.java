@@ -20,7 +20,10 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    Router router = new Router();
+    router.addRoute("GET", "/simple_get");
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -40,7 +43,10 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    Router router = new Router();
+    router.addRoute("GET", "/simple_get");
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -55,7 +61,11 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    Router router = new Router();
+    router.addRoute("GET", "/simple_get");
+    router.addRoute("GET", "/test");
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -70,7 +80,11 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    Router router = new Router();
+    router.addRoute("GET", "/simple_get");
+    router.addRoute("HEAD", "/simple_get");
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -85,7 +99,11 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    Router router = new Router();
+    router.addRoute("GET", "/simple_get");
+    router.addRoute("GET", "/redirect");
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n", socketWrapperSpy.getSentData());

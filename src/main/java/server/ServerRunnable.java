@@ -5,27 +5,18 @@ import server.wrappers.ISocketWrapper;
 
 public class ServerRunnable implements Runnable {
     public ISocketWrapper socketWrapper;
+    public Router router;
 
-    public ServerRunnable(ISocketWrapper socketWrapper) {
+    public ServerRunnable(ISocketWrapper socketWrapper, Router router) {
         this.socketWrapper = socketWrapper;
+        this.router = router;
     }
-
 
     public void run() {
         try {
             String clientMessage = socketWrapper.receiveData();
             if (clientMessage != null) {
                 Request request = new Request(clientMessage);
-
-                // Router will be instantiated in HTTPServer and be injected into runnable.
-                Router router = new Router();
-                router.addRoute("GET", "/simple_get");
-                router.addRoute("HEAD", "/simple_get");
-                router.addRoute("HEAD", "/get_with_body");
-                router.addRoute("POST", "/echo_body");
-                router.addRoute("GET", "/redirect");
-                router.addRoute("GET", "/test");
-
 
                 Response response = router.handle(request);
                 System.out.println("Message received by server: " + clientMessage);
