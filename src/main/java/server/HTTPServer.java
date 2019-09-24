@@ -10,13 +10,15 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class HTTPServer {
     public IServerSocketWrapper serverSocket;
     private ExecutorService pool;
+    public static final ServerLogger serverLogger = new ServerLogger();
 
     public HTTPServer(IServerSocketWrapper serverSocket, ExecutorService executorService) {
         this.serverSocket = serverSocket;
-        pool = executorService;
+        this.pool = executorService;
     }
 
     public static void main(String[] args) {
@@ -36,6 +38,10 @@ public class HTTPServer {
         router.addRoute("POST", "/echo_body", new EchoHandler());
         router.addRoute("GET", "/redirect", new RedirectHandler());
         router.addRoute("GET", "/test", new DefaultHandler());
+
+//        router.addRoute("NOPE", "/test", new DefaultHandler());
+//        router.addRoute("FAIL", "/test", new DefaultHandler());
+
         return router;
     }
 

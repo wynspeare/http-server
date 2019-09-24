@@ -35,18 +35,11 @@ public class RouterTest {
     };
   }
 
-  @Test(expected = InvalidRequestException.class)
-  public void routerCanCheckIfIncomingMethodIsInValid() throws InvalidRequestException {
-    Router router = new Router();
-
-    router.isValidMethod("Unknown METHOD");
-  }
-
   @Rule
   public ExpectedException exceptionRule = ExpectedException.none();
 
   @Test
-  public void routerCanCheckIfIncomingMethodIsNotValidUsingExceptionRule() throws InvalidRequestException {
+  public void routerCanCheckIfIncomingMethodIsNotValidUsingExceptionRule() throws Exception {
     Router router = new Router();
     exceptionRule.expect(InvalidRequestException.class);
     exceptionRule.expectMessage("Request Method Not Found");
@@ -61,17 +54,19 @@ public class RouterTest {
     assertTrue(router.routes.containsKey("/simple_get"));
   }
 
-//  @Test(expected = InvalidRequestException.class)
+//  @Test
 //  public void routerCannotAddAnRouteWithInvalidMethodToRoutes() {
 //    Router router = new Router();
 //    router.addRoute("Unknown Method", "/simple_get", new DefaultHandler());
+////    assert(HTTPServer.serverLogger.toString().contains("Request Method Not Found"));
+////    System.out.println(HTTPServer.serverLogger.toString());
 //  }
+
 
   @Test
   public void routerCanChecksTheURIinARequest() {
     Router router = new Router();
     router.addRoute("GET", "/random_path", new DefaultHandler());
-
     Request request = new Request("GET /random_path HTTP/1.1");
 
     assertTrue(router.isValidURI(request.getRequestPath()));
@@ -81,7 +76,6 @@ public class RouterTest {
   public void routerCanChecksTheURIinARequestInvalid() {
     Router router = new Router();
     router.addRoute("GET", "/random_path", new DefaultHandler());
-
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertFalse(router.isValidURI(request.getRequestPath()));

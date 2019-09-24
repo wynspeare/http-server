@@ -35,7 +35,7 @@ public class Router {
         }
       }
     } catch (InvalidRequestException e) {
-      e.printStackTrace();
+      HTTPServer.serverLogger.log(e.getMessage(), method);
     }
   }
 
@@ -68,7 +68,7 @@ public class Router {
       Methods.valueOf(method);
       return true;
     } catch (Exception e) {
-      throw new InvalidRequestException("Request Method Not Found");
+      throw new InvalidRequestException("Request Method Not Found", e);
     }
   }
 
