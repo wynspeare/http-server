@@ -1,5 +1,8 @@
 package server;
 
+import server.handlers.DefaultHandler;
+import server.handlers.EchoHandler;
+import server.handlers.RedirectHandler;
 import server.wrappers.IServerSocketWrapper;
 import server.wrappers.ISocketWrapper;
 import server.wrappers.ServerSocketWrapper;
@@ -27,12 +30,12 @@ public class HTTPServer {
     public static Router createRouter() {
         Router router = new Router();
 
-        router.addRoute("GET", "/simple_get");
-        router.addRoute("HEAD", "/simple_get");
-        router.addRoute("HEAD", "/get_with_body");
-        router.addRoute("POST", "/echo_body");
-        router.addRoute("GET", "/redirect");
-        router.addRoute("GET", "/test");
+        router.addRoute("GET", "/simple_get", new DefaultHandler());
+        router.addRoute("HEAD", "/simple_get", new DefaultHandler());
+        router.addRoute("HEAD", "/get_with_body", new DefaultHandler());
+        router.addRoute("POST", "/echo_body", new EchoHandler());
+        router.addRoute("GET", "/redirect", new RedirectHandler());
+        router.addRoute("GET", "/test", new DefaultHandler());
         return router;
     }
 

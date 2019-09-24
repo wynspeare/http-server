@@ -4,7 +4,7 @@ import HTTPcomponents.StatusCode;
 import server.Response;
 import server.request.Request;
 
-public class GetHandler implements IHandler {
+public class DefaultHandler implements IHandler {
   @Override
   public Response buildResponse(Request request) {
     Response response = new Response();

@@ -1,12 +1,10 @@
 package server;
 
 import HTTPcomponents.Methods;
-import HTTPcomponents.StatusCode;
 import org.junit.Test;
-import server.handlers.GetHandler;
+import server.handlers.DefaultHandler;
 import server.handlers.IHandler;
 import server.handlers.RedirectHandler;
-import server.request.Handler;
 import server.request.Request;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class RouterTest {
   @Test
   public void routerCanAddURIToAHashMapOfRoutes() {
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     assertTrue(router.routes.containsKey("/simple_get"));
   }
@@ -48,7 +46,7 @@ public class RouterTest {
   @Test
   public void routerCanChecksTheURIinARequest() {
     Router router = new Router();
-    router.addRoute("GET", "/random_path");
+    router.addRoute("GET", "/random_path", new DefaultHandler());
 
     Request request = new Request("GET /random_path HTTP/1.1");
 
@@ -58,7 +56,7 @@ public class RouterTest {
   @Test
   public void routerCanChecksTheURIinARequestInvalid() {
     Router router = new Router();
-    router.addRoute("GET", "/random_path");
+    router.addRoute("GET", "/random_path", new DefaultHandler());
 
     Request request = new Request("GET /simple_get HTTP/1.1");
 
@@ -70,7 +68,7 @@ public class RouterTest {
     Router router = new Router();
     HashMap<Methods, IHandler> methodHandler = new HashMap<>();
 
-    IHandler getHandler = new GetHandler();
+    IHandler getHandler = new DefaultHandler();
     IHandler redirectHandler = new RedirectHandler();
 
     methodHandler.put(Methods.GET, getHandler);
@@ -88,19 +86,19 @@ public class RouterTest {
   @Test
   public void routerCanAddTwoMethodsForOneURI() {
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
-    router.addRoute("HEAD", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
     assertTrue(router.routes.get("/simple_get") instanceof List);
-    assertTrue(router.routes.get("/simple_get").get(0).get(Methods.GET) instanceof GetHandler);
-    assertTrue(router.routes.get("/simple_get").get(1).get(Methods.HEAD) instanceof GetHandler);
+    assertTrue(router.routes.get("/simple_get").get(0).get(Methods.GET) instanceof DefaultHandler);
+    assertTrue(router.routes.get("/simple_get").get(1).get(Methods.HEAD) instanceof DefaultHandler);
   }
 
   @Test
   public void routerCanHandleARequest() {
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
-    router.addRoute("HEAD", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
     Request request = new Request("GET /simple_get HTTP/1.1");
 

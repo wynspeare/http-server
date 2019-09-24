@@ -1,6 +1,8 @@
 package server;
 
 import org.junit.Test;
+import server.handlers.DefaultHandler;
+import server.handlers.RedirectHandler;
 import server.wrappers.SocketWrapperSpy;
 
 import java.io.BufferedReader;
@@ -21,7 +23,7 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
@@ -44,7 +46,7 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
@@ -62,8 +64,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
-    router.addRoute("GET", "/test");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("GET", "/test", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
@@ -81,8 +83,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
-    router.addRoute("HEAD", "/simple_get");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
@@ -100,8 +102,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     Router router = new Router();
-    router.addRoute("GET", "/simple_get");
-    router.addRoute("GET", "/redirect");
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("GET", "/redirect", new RedirectHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
