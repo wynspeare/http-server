@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class HTTPServer {
     public IServerSocketWrapper serverSocket;
     private ExecutorService pool;
-    public static final ServerLogger serverLogger = new ServerLogger();
+    public static final ServerLogger serverLogger = createLogger("Logs");
 
     public HTTPServer(IServerSocketWrapper serverSocket, ExecutorService executorService) {
         this.serverSocket = serverSocket;
@@ -29,8 +29,12 @@ public class HTTPServer {
         server.serve(router);
     }
 
+    public static ServerLogger createLogger(String directory) {
+        return new ServerLogger(directory);
+    }
+
     public static Router createRouter() {
-        Router router = new Router();
+        Router router = new Router(serverLogger);
 
         router.addRoute("GET", "/simple_get", new DefaultHandler());
         router.addRoute("HEAD", "/simple_get", new DefaultHandler());

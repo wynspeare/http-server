@@ -6,12 +6,12 @@ import java.util.logging.*;
 public class ServerLogger {
   private Logger logger;
 
-  public ServerLogger(){
+  public ServerLogger(String directoryLocation){
     logger = Logger.getLogger(ServerLogger.class.getName());
-    makeLogDirectory("Logs");
+    makeLogDirectory(directoryLocation);
 
     try {
-      FileHandler fileHandler= new FileHandler("Logs/serverLogger.log", 50000, 20, true);
+      FileHandler fileHandler= new FileHandler(directoryLocation + "/serverLogger.log", 50000, 20, true);
       fileHandler.setFormatter(new SimpleFormatter());
       logger.addHandler(fileHandler);
     } catch (Exception e) {

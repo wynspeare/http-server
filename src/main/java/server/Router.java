@@ -11,9 +11,11 @@ import java.util.List;
 
 public class Router {
   public HashMap<String, List<HashMap<Methods, IHandler>>> routes;
+  public ServerLogger serverLogger;
 
-  public Router() {
+  public Router(ServerLogger serverLogger) {
     routes = new HashMap<>();
+    this.serverLogger = serverLogger;
   }
 
   public void addRoute(String method, String uri, IHandler handler) {
@@ -35,7 +37,7 @@ public class Router {
         }
       }
     } catch (InvalidRequestException e) {
-      HTTPServer.serverLogger.log(e.getMessage(), method);
+      serverLogger.log(e.getMessage(), method);
     }
   }
 
