@@ -1,9 +1,12 @@
-package server;
+package server.logger;
 
 import java.io.File;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
-public class ServerLogger {
+
+public class ServerLogger implements ILogger {
   private Logger logger;
 
   public ServerLogger(String directoryLocation){

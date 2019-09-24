@@ -2,6 +2,7 @@ package server;
 
 import HTTPcomponents.Methods;
 import server.handlers.IHandler;
+import server.logger.ILogger;
 import server.request.Request;
 import server.utils.InvalidRequestException;
 
@@ -11,9 +12,9 @@ import java.util.List;
 
 public class Router {
   public HashMap<String, List<HashMap<Methods, IHandler>>> routes;
-  public ServerLogger serverLogger;
+  public ILogger serverLogger;
 
-  public Router(ServerLogger serverLogger) {
+  public Router(ILogger serverLogger) {
     routes = new HashMap<>();
     this.serverLogger = serverLogger;
   }

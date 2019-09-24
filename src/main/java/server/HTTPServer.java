@@ -3,6 +3,7 @@ package server;
 import server.handlers.DefaultHandler;
 import server.handlers.EchoHandler;
 import server.handlers.RedirectHandler;
+import server.logger.ServerLogger;
 import server.wrappers.IServerSocketWrapper;
 import server.wrappers.ISocketWrapper;
 import server.wrappers.ServerSocketWrapper;
@@ -42,9 +43,6 @@ public class HTTPServer {
         router.addRoute("POST", "/echo_body", new EchoHandler());
         router.addRoute("GET", "/redirect", new RedirectHandler());
         router.addRoute("GET", "/test", new DefaultHandler());
-
-//        router.addRoute("NOPE", "/test", new DefaultHandler());
-//        router.addRoute("FAIL", "/test", new DefaultHandler());
 
         return router;
     }
