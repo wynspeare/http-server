@@ -1,11 +1,14 @@
 package server;
 
 import HTTPcomponents.Methods;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import server.handlers.DefaultHandler;
 import server.handlers.IHandler;
 import server.handlers.RedirectHandler;
 import server.request.Request;
+import server.utils.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,14 +28,29 @@ public class RouterTest {
   public void routerCanCheckIfIncomingMethodIsValid() {
     Router router = new Router();
 
-    assertTrue(router.isValidMethod("GET"));
+    try {
+      assertTrue(router.isValidMethod("GET"));
+    } catch (InvalidRequestException e) {
+      e.printStackTrace();
+    };
   }
 
-  @Test
-  public void routerCanCheckIfIncomingMethodIsInValid() {
+  @Test(expected = InvalidRequestException.class)
+  public void routerCanCheckIfIncomingMethodIsInValid() throws InvalidRequestException {
     Router router = new Router();
 
-    assertFalse(router.isValidMethod("BAD METHOD"));
+    router.isValidMethod("Unknown METHOD");
+  }
+
+  @Rule
+  public ExpectedException exceptionRule = ExpectedException.none();
+
+  @Test
+  public void routerCanCheckIfIncomingMethodIsNotValidUsingExceptionRule() throws InvalidRequestException {
+    Router router = new Router();
+    exceptionRule.expect(InvalidRequestException.class);
+    exceptionRule.expectMessage("Request Method Not Found");
+    router.isValidMethod("Unknown METHOD");
   }
 
   @Test
@@ -42,6 +60,12 @@ public class RouterTest {
 
     assertTrue(router.routes.containsKey("/simple_get"));
   }
+
+//  @Test(expected = InvalidRequestException.class)
+//  public void routerCannotAddAnRouteWithInvalidMethodToRoutes() {
+//    Router router = new Router();
+//    router.addRoute("Unknown Method", "/simple_get", new DefaultHandler());
+//  }
 
   @Test
   public void routerCanChecksTheURIinARequest() {

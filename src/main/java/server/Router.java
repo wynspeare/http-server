@@ -3,6 +3,7 @@ package server;
 import HTTPcomponents.Methods;
 import server.handlers.IHandler;
 import server.request.Request;
+import server.utils.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,19 +19,23 @@ public class Router {
   public void addRoute(String method, String uri, IHandler handler) {
     List<HashMap<Methods, IHandler>> addedRoutes = new ArrayList();
 
-    if (isValidMethod(method)) {
-      if (!routes.containsKey(uri)) {
-        HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
-          put(getMethod(method), handler);
-        }};
-        addedRoutes.add(newRoute);
-        routes.put(uri, addedRoutes);
-      } else {
-        HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
-          put(getMethod(method), handler);
-        }};
-        routes.get(uri).add(newRoute);
+    try {
+      if (isValidMethod(method)) {
+        if (!routes.containsKey(uri)) {
+          HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
+            put(getMethod(method), handler);
+          }};
+          addedRoutes.add(newRoute);
+          routes.put(uri, addedRoutes);
+        } else {
+          HashMap<Methods, IHandler> newRoute = new HashMap<Methods, IHandler>() {{
+            put(getMethod(method), handler);
+          }};
+          routes.get(uri).add(newRoute);
+        }
       }
+    } catch (InvalidRequestException e) {
+      e.printStackTrace();
     }
   }
 
@@ -58,12 +63,12 @@ public class Router {
     return Methods.valueOf(method);
   }
 
-  public boolean isValidMethod(String method) {
+  public boolean isValidMethod(String method) throws InvalidRequestException {
     try {
       Methods.valueOf(method);
       return true;
     } catch (Exception e) {
-      return false;
+      throw new InvalidRequestException("Request Method Not Found");
     }
   }
 
