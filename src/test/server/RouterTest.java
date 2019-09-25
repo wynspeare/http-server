@@ -95,7 +95,7 @@ public class RouterTest {
     HashMap<Methods, IHandler> methodHandler = new HashMap<>();
 
     IHandler getHandler = new DefaultHandler();
-    IHandler redirectHandler = new RedirectHandler();
+    IHandler redirectHandler = new RedirectHandler("http://127.0.0.1:5000/simple_get");
 
     methodHandler.put(Methods.GET, getHandler);
     List<HashMap<Methods, IHandler>> allowedRoutes = new ArrayList();

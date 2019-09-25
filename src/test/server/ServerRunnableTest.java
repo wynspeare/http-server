@@ -109,7 +109,7 @@ public class ServerRunnableTest {
     LoggerSpy testLogger = new LoggerSpy();
     Router router = new Router(testLogger);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
-    router.addRoute("GET", "/redirect", new RedirectHandler());
+    router.addRoute("GET", "/redirect", new RedirectHandler("http://127.0.0.1:5000/simple_get"));
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();

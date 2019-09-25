@@ -41,7 +41,7 @@ public class HTTPServer {
         router.addRoute("HEAD", "/simple_get", new DefaultHandler());
         router.addRoute("HEAD", "/get_with_body", new DefaultHandler());
         router.addRoute("POST", "/echo_body", new EchoHandler());
-        router.addRoute("GET", "/redirect", new RedirectHandler());
+        router.addRoute("GET", "/redirect", new RedirectHandler("http://127.0.0.1:5000/simple_get"));
         router.addRoute("GET", "/test", new DefaultHandler());
 
         return router;

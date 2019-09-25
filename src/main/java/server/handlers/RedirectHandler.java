@@ -5,11 +5,16 @@ import server.Response;
 import server.request.Request;
 
 public class RedirectHandler implements IHandler {
+  String redirectedLocation;
+
+  public RedirectHandler(String redirectedLocation) {
+    this.redirectedLocation = redirectedLocation;
+  }
   @Override
   public Response buildResponse(Request request) {
     Response response = new Response();
     response.build(StatusCode.Moved_Permanently);
-    response.addHeaders("Location: http://127.0.0.1:5000/simple_get");
+    response.addHeaders("Location: " + redirectedLocation);
     return response;
   }
 }

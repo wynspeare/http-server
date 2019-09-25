@@ -19,10 +19,9 @@ public class ServerRunnable implements Runnable {
                 Request request = new Request(clientMessage);
 
                 Response response = router.handle(request);
-                System.out.println("Message received by server: " + clientMessage);
-                System.out.println("RESPONSE: " + response);
+                System.out.println("REQUEST received by server: " + clientMessage);
+                System.out.println("RESPONSE: " + response.getStatusLine());
                 socketWrapper.sendData(response.getStatusLine());
-
             }
         } catch (Exception e) {
             e.printStackTrace();
