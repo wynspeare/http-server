@@ -38,5 +38,4 @@ public class ResponseTest {
 
     assertEquals("HTTP/1.1 200 OK\r\nsome body that could be anything", response.getStatusLine());
   }
-
 }

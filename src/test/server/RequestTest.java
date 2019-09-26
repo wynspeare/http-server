@@ -2,7 +2,6 @@ package server;
 
 import HTTPcomponents.Methods;
 import org.junit.Test;
-import server.request.ParseHeaders;
 import server.request.Request;
 
 import java.util.Map;
@@ -40,7 +39,7 @@ public class RequestTest {
   }
 
   @Test
-  public void requestMatchsIncomingRequestToEnumHTTPMethod() {
+  public void requestMatchesIncomingRequestToEnumHTTPMethod() {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals(Methods.GET.toString(), request.getRequestMethod());
