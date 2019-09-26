@@ -1,6 +1,9 @@
 package server;
 
 import org.junit.Test;
+import server.handlers.DefaultHandler;
+import server.handlers.RedirectHandler;
+import server.logger.LoggerSpy;
 import server.wrappers.SocketWrapperSpy;
 
 import java.io.BufferedReader;
@@ -20,7 +23,11 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -40,7 +47,11 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -55,7 +66,12 @@ public class ServerRunnableTest {
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("GET", "/test", new DefaultHandler());
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
@@ -63,28 +79,43 @@ public class ServerRunnableTest {
   }
 
   @Test
-  public void twoRunnablesListenAndRespondForSimpleGet() {
+  public void runnableListensAndRespondsForSimpleHEAD() {
 
     BufferedReader input = new BufferedReader(
-            new StringReader("GET /simple_get HTTP/1.1\n"));
+            new StringReader("HEAD /simple_get HTTP/1.1\n"));
     PrintWriter output = new PrintWriter(new StringWriter(), true);
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
-    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy);
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("HEAD", "/simple_get", new DefaultHandler());
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
-
-    BufferedReader input2 = new BufferedReader(
-            new StringReader("GET /simple_get HTTP/1.1\n"));
-    SocketWrapperSpy socketWrapperSpy2 = new SocketWrapperSpy(input2, output);
-
-    ServerRunnable secondRunnable = new ServerRunnable(socketWrapperSpy2);
-    secondRunnable.run();
 
     assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
+  }
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy2.getSentData());
-    assertTrue(socketWrapperSpy2.wasCloseCalled());
+  @Test
+  public void runnableListensAndRespondsForRedirect() {
+
+    BufferedReader input = new BufferedReader(
+            new StringReader("GET /redirect HTTP/1.1\n"));
+    PrintWriter output = new PrintWriter(new StringWriter(), true);
+    SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
+
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/simple_get", new DefaultHandler());
+    router.addRoute("GET", "/redirect", new RedirectHandler("http://127.0.0.1:5000/simple_get"));
+
+    ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
+    runnable.run();
+
+    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n", socketWrapperSpy.getSentData());
+    assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
 }

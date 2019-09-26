@@ -1,8 +1,12 @@
 package server.request;
 
+import HTTPcomponents.Methods;
+
 import java.util.HashMap;
 import static HTTPcomponents.StatusLineComponents.CRLF;
 
+
+import static HTTPcomponents.StatusLineComponents.CRLF;
 
 public class Request {
   String incomingRequest;
@@ -13,6 +17,10 @@ public class Request {
 
   public String getRequestMethod() {
     return incomingRequest.split(" ")[0];
+  }
+
+  public Methods getMethod() {
+    return Methods.valueOf(getRequestMethod());
   }
 
   public String getRequestPath() {
