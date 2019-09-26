@@ -30,4 +30,12 @@ public class ServerSocketWrapper implements IServerSocketWrapper {
     public boolean isClosed() {
         return serverSocket.isClosed();
     }
+
+    public void close(){
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

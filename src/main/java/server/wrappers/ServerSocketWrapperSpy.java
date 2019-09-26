@@ -20,6 +20,8 @@ public class ServerSocketWrapperSpy implements IServerSocketWrapper {
     return false;
   }
 
+  public void close() { }
+
   public void injectSocketWrapper(BufferedReader input, PrintWriter output) {
     socketWrapper = new SocketWrapperSpy(input, output);
   }
