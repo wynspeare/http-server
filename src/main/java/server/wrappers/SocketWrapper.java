@@ -10,10 +10,14 @@ public class SocketWrapper implements ISocketWrapper {
   private BufferedReader input;
   private PrintWriter output;
 
-  public SocketWrapper(Socket socket) throws IOException {
-    this.input = new BufferedReader(
-            new InputStreamReader(socket.getInputStream()));
-    this.output = new PrintWriter(socket.getOutputStream(), true);
+  public SocketWrapper(Socket socket) {
+    try {
+      this.input = new BufferedReader(
+              new InputStreamReader(socket.getInputStream()));
+      this.output = new PrintWriter(socket.getOutputStream(), true);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public String receiveData() {

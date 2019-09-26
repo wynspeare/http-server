@@ -17,6 +17,11 @@ public class Response {
     statusLine = VERSION + SP + this.statusCode + SP + statusCode + CRLF;
   }
 
+  public void build(StatusCode statusCode, String body) {
+    this.statusCode = statusCode.code;
+    statusLine = VERSION + SP + this.statusCode + SP + statusCode + CRLF + body;
+  }
+
   public int getStatusCode() {
     return statusCode;
   }

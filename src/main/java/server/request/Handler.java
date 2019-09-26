@@ -19,10 +19,17 @@ public class Handler {
     return request.getRequestMethod().equals(Methods.HEAD.toString());
   }
 
+  public Boolean isPOSTRequest() {
+    return request.getRequestMethod().equals(Methods.POST.toString());
+  }
+
   public Response buildResponse() {
     Response response = new Response();
     if (isGETRequest() || isHEADRequest()) {
       response.build(StatusCode.OK);
+    }
+    else if (isPOSTRequest()) {
+      response.build(StatusCode.OK, request.getRequestBody());
     }
     return response;
   }
