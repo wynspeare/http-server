@@ -1,9 +1,5 @@
 package server;
 
-import server.handlers.DefaultHandler;
-import server.handlers.EchoHandler;
-import server.handlers.RedirectHandler;
-import server.logger.ServerLogger;
 import server.wrappers.IServerSocketWrapper;
 import server.wrappers.ISocketWrapper;
 import server.wrappers.ServerSocketWrapper;
@@ -14,24 +10,11 @@ import java.util.concurrent.Executors;
 public class HTTPServer {
     public IServerSocketWrapper serverSocket;
     private ExecutorService pool;
-    public static final ServerLogger serverLogger = createLogger("Logs");
 
-
-    public HTTPServer() {
-        this.serverSocket = new ServerSocketWrapper(5000);;
+    public void buildServerSocket(int port) {
+        serverSocket = new ServerSocketWrapper(port);
         int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
-        this.pool = Executors.newFixedThreadPool(processingCoresAvailable);
-    }
-
-//    public static void main(String[] args) {
-//        HTTPServer server = new HTTPServer();
-//        server.serverSocket = new ServerSocketWrapper(5000);;
-//        int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
-//        server.pool = Executors.newFixedThreadPool(processingCoresAvailable);
-//    }
-
-    public static ServerLogger createLogger(String directory) {
-        return new ServerLogger(directory);
+        pool = Executors.newFixedThreadPool(processingCoresAvailable);
     }
 
     public Runnable createRunnable(Router router) {

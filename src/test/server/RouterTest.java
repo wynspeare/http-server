@@ -35,7 +35,7 @@ public class RouterTest {
       assertTrue(router.isValidMethod("GET"));
     } catch (InvalidRequestException e) {
       e.printStackTrace();
-    };
+    }
   }
 
   @Rule
@@ -131,6 +131,17 @@ public class RouterTest {
     Request request = new Request("GET /simple_get HTTP/1.1");
 
     assertEquals("HTTP/1.1 200 OK\r\n", router.handle(request).getStatusLine());
+  }
+
+
+  @Test
+  public void routerCanGetSingleSlashURIFromARequest() {
+    LoggerSpy testLogger = new LoggerSpy();
+    Router router = new Router(testLogger);
+    router.addRoute("GET", "/", new DefaultHandler());
+    Request request = new Request("GET / HTTP/1.1");
+
+    assertTrue(router.isValidURI(request.getRequestPath()));
   }
 
 }
