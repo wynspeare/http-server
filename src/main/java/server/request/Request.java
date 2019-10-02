@@ -5,9 +5,6 @@ import HTTPcomponents.Methods;
 import java.util.HashMap;
 import static HTTPcomponents.StatusLineComponents.CRLF;
 
-
-import static HTTPcomponents.StatusLineComponents.CRLF;
-
 public class Request {
   String incomingRequest;
 

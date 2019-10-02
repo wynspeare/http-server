@@ -118,4 +118,15 @@ public class RequestTest {
 
     assertEquals("a body\r\nwith a CRLF line break\r\n!", request.getRequestBody());
   }
+
+  @Test
+  public void requestTakesInAStatusLineAndReturnsTheRouteForSingleSlash() {
+    String incomingRequest = "POST / HTTP/1.1\n" +
+            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+            "\r\n" +
+            "a body\r\nwith a CRLF line break\r\n!";
+    Request request = new Request(incomingRequest);
+
+    assertEquals("/", request.getRequestPath());
+  }
 }
