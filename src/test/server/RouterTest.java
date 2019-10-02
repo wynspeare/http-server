@@ -122,19 +122,6 @@ public class RouterTest {
   }
 
   @Test
-  public void routerCanHandleARequest() {
-    LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
-    router.addRoute("GET", "/simple_get", new DefaultHandler());
-    router.addRoute("HEAD", "/simple_get", new DefaultHandler());
-
-    Request request = new Request("GET /simple_get HTTP/1.1");
-
-    assertEquals("HTTP/1.1 200 OK\r\n", router.handle(request).getStatusLine());
-  }
-
-
-  @Test
   public void routerCanGetSingleSlashURIFromARequest() {
     LoggerSpy testLogger = new LoggerSpy();
     Router router = new Router(testLogger);
@@ -143,5 +130,4 @@ public class RouterTest {
 
     assertTrue(router.isValidURI(request.getRequestPath()));
   }
-
 }

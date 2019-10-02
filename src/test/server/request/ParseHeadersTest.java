@@ -13,8 +13,7 @@ public class ParseHeadersTest {
   @Test
   public void headersCanBeParsedFromARequest() {
     ParseHeaders parseHeaders = new ParseHeaders();
-    String request = "GET /simple_get HTTP/1.1\n" +
-            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+    String request = "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +
             "User-Agent: Ruby\n" +
             "Connection: close\n" +

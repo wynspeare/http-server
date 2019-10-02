@@ -30,7 +30,7 @@ public class ServerRunnableTest {
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -54,7 +54,7 @@ public class ServerRunnableTest {
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -74,7 +74,7 @@ public class ServerRunnableTest {
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -94,7 +94,7 @@ public class ServerRunnableTest {
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -114,8 +114,7 @@ public class ServerRunnableTest {
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
-
 }

@@ -44,8 +44,9 @@ public class Router {
 
   public Response handle(Request request) {
     Response response = new Response();
-    if (isValidURI(request.getRequestPath())) {
-      List<HashMap<Methods, IHandler>> allowedMethods = routes.get(request.getRequestPath());
+    String requestPath = request.getRequestPath();
+    if (isValidURI(requestPath)) {
+      List<HashMap<Methods, IHandler>> allowedMethods = routes.get(requestPath);
       IHandler handler = getAllowedMethodHandler(allowedMethods, request);
       response = handler.buildResponse(request);
     }
