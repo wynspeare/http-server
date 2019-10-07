@@ -17,10 +17,11 @@ public class ServerRunnable implements Runnable {
             String clientMessage = socketWrapper.receiveData();
             if (clientMessage != null) {
                 Request request = new Request(clientMessage);
+
                 Response response = router.handle(request);
-                System.out.println("REQUEST received by server: " + clientMessage);
-                System.out.println("RESPONSE: " + response.stringifyResponse());
-                socketWrapper.sendData(response.stringifyResponse());
+                System.out.println("=============\nREQUEST received by server: " + clientMessage);
+
+                socketWrapper.sendData(response.getResponseAsBytes());
             }
         } catch (Exception e) {
             e.printStackTrace();

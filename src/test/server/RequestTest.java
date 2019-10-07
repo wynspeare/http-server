@@ -4,6 +4,7 @@ import HTTPcomponents.Methods;
 import org.junit.Test;
 import server.request.Request;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static HTTPcomponents.StatusLineComponents.VERSION;
@@ -117,5 +118,25 @@ public class RequestTest {
     Request request = new Request(incomingRequest);
 
     assertEquals("a body\r\nwith a CRLF line break\r\n!", request.getRequestBody());
+  }
+
+  @Test
+  public void requestReceivesAPOSTWithHeadersAndReturnsTheBodyAsAByteArray() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\r\n" +
+            "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
+            "Accept: */*\n" +
+            "User-Agent: Ruby\n" +
+            "Connection: close\n" +
+            "Host: 127.0.0.1:5000\n" +
+            "Content-Length: 9\n" +
+            "Content-Type: application/x-www-form-urlencoded\n" +
+            "\r\n\r\n" +
+            "some body";
+    Request request = new Request(incomingRequest);
+
+    byte[] expected = "some body".getBytes(StandardCharsets.UTF_8);
+    byte[] output = request.getRequestBodyAsBytes();
+
+    assertArrayEquals(expected, output);
   }
 }

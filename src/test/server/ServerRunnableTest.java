@@ -24,7 +24,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
@@ -48,7 +49,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
@@ -67,7 +69,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("GET", "/test", new DefaultHandler());
 
@@ -87,7 +90,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
@@ -107,7 +111,8 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("GET", "/redirect", new RedirectHandler("http://127.0.0.1:5000/simple_get"));
 

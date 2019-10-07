@@ -2,6 +2,7 @@ package server.request;
 
 import HTTPcomponents.Methods;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import static HTTPcomponents.StatusLineComponents.CRLF;
 
@@ -37,6 +38,10 @@ public class Request {
 
   public String getRequestBody() {
     return incomingRequest.split(CRLF + CRLF, 2)[1];
+  }
+
+  public byte[] getRequestBodyAsBytes() {
+    return getRequestBody().getBytes(StandardCharsets.UTF_8);
   }
 }
 

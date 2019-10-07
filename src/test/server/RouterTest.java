@@ -21,7 +21,8 @@ public class RouterTest {
   @Test
   public void routerHasAnEmptyHashMapOfRoutes() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
 
     assertTrue(router.routes.isEmpty());
   }
@@ -29,7 +30,8 @@ public class RouterTest {
   @Test
   public void routerCanCheckIfIncomingMethodIsValid() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
 
     try {
       assertTrue(router.isValidMethod("GET"));
@@ -44,7 +46,8 @@ public class RouterTest {
   @Test
   public void routerCanCheckIfIncomingMethodIsNotValidUsingExceptionRule() throws Exception {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     exceptionRule.expect(InvalidRequestException.class);
     exceptionRule.expectMessage("Request Method Not Found");
     router.isValidMethod("Unknown METHOD");
@@ -53,7 +56,8 @@ public class RouterTest {
   @Test
   public void routerCanAddURIToAHashMapOfRoutes() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     assertTrue(router.routes.containsKey("/simple_get"));
@@ -62,7 +66,8 @@ public class RouterTest {
   @Test
   public void routerCannotAddAnRouteWithInvalidMethodToRoutes() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("Unknown Method", "/simple_get", new DefaultHandler());
 
     assertTrue(testLogger.getLoggedMessage().contains("\"Unknown Method\" - Request Method Not Found"));
@@ -71,27 +76,31 @@ public class RouterTest {
   @Test
   public void routerCanChecksTheURIinARequest() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    Controller controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/random_path", new DefaultHandler());
     Request request = new Request("GET /random_path HTTP/1.1");
 
-    assertTrue(router.isValidURI(request.getRequestPath()));
+    assertTrue(controller.isValidURI(request.getRequestPath(), router.routes));
   }
 
   @Test
-  public void routerCanChecksTheURIinARequestInvalid() {
+  public void routerCanSeeTheURIinARequestIsInvalid() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    Controller controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/random_path", new DefaultHandler());
     Request request = new Request("GET /simple_get HTTP/1.1");
 
-    assertFalse(router.isValidURI(request.getRequestPath()));
+    assertFalse(controller.isValidURI(request.getRequestPath(), router.routes));
   }
+
 
   @Test
   public void routerCanGetAllowedMethodWithManuallyBuiltAllowedRoutes() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    Controller controller = new Controller();
+    Router router = new Router(testLogger, controller);
     HashMap<Methods, IHandler> methodHandler = new HashMap<>();
 
     IHandler getHandler = new DefaultHandler();
@@ -106,13 +115,14 @@ public class RouterTest {
 
     Request request = new Request("GET /simple_get HTTP/1.1");
 
-    assertTrue(router.getAllowedMethodHandler(allowedRoutes, request) instanceof IHandler);
+    assertTrue(controller.getAllowedMethodHandler(allowedRoutes, request) instanceof IHandler);
   }
 
   @Test
   public void routerCanAddTwoMethodsForOneURI() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
@@ -124,10 +134,11 @@ public class RouterTest {
   @Test
   public void routerCanGetSingleSlashURIFromARequest() {
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    Controller controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/", new DefaultHandler());
     Request request = new Request("GET / HTTP/1.1");
 
-    assertTrue(router.isValidURI(request.getRequestPath()));
+    assertTrue(controller.isValidURI(request.getRequestPath(), router.routes));
   }
 }

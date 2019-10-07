@@ -9,7 +9,7 @@ public class EchoHandler implements IHandler {
   public Response buildResponse(Request request) {
     Response response = new Response.Builder()
             .withStatusLine(StatusCode.OK)
-            .withBody(request.getRequestBody())
+            .withBody(request.getRequestBodyAsBytes())
             .build();
     return response;
   }

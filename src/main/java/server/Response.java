@@ -1,6 +1,10 @@
 package server;
 
 import HTTPcomponents.StatusCode;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import static HTTPcomponents.StatusLineComponents.CRLF;
 import static HTTPcomponents.StatusLineComponents.VERSION;
 import static HTTPcomponents.StatusLineComponents.SP;
@@ -8,14 +12,29 @@ import static HTTPcomponents.StatusLineComponents.SP;
 public class Response {
   private String statusLine;
   private String headers;
-  private String body;
+  private byte[] body;
 
   public String getStatusLine() {
     return statusLine;
   }
 
   public String stringifyResponse() {
-    return statusLine + headers + CRLF + body;
+    String bodyAsString = new String(body);
+    return statusLine + headers + CRLF + bodyAsString;
+  }
+
+  public byte[] getResponseAsBytes() {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    try {
+      outputStream.write(statusLine.getBytes());
+      outputStream.write(headers.getBytes());
+      outputStream.write(CRLF.getBytes());
+      outputStream.write(body == null ? "".getBytes() : body);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return outputStream.toByteArray();
   }
 
   public static class Builder {
@@ -23,12 +42,12 @@ public class Response {
     private Response response;
     private String statusLine;
     private String headers;
-    private String body;
+    private byte[] body;
 
     public Builder(){
       this.response = new Response();
       this.headers = "";
-      this.body = "";
+      this.body = new byte[] {};
     }
 
     public Builder withStatusLine(StatusCode statusCodeText) {
@@ -42,7 +61,7 @@ public class Response {
       return this;
     }
 
-    public Builder withBody(String body) {
+    public Builder withBody(byte[] body) {
       this.body = body;
       return this;
     }
