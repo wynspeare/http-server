@@ -7,8 +7,10 @@ import server.request.Request;
 public class EchoHandler implements IHandler {
   @Override
   public Response buildResponse(Request request) {
-    Response response = new Response();
-    response.build(StatusCode.OK, request.getRequestBody());
+    Response response = new Response.Builder()
+            .withStatusLine(StatusCode.OK)
+            .withBody(request.getRequestBodyAsBytes())
+            .build();
     return response;
   }
 }

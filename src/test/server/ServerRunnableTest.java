@@ -24,13 +24,14 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -48,13 +49,14 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -67,14 +69,15 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("GET", "/test", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -87,14 +90,15 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("HEAD", "/simple_get", new DefaultHandler());
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 200 OK\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 200 OK\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
 
@@ -107,15 +111,15 @@ public class ServerRunnableTest {
     SocketWrapperSpy socketWrapperSpy = new SocketWrapperSpy(input, output);
 
     LoggerSpy testLogger = new LoggerSpy();
-    Router router = new Router(testLogger);
+    IController controller = new Controller();
+    Router router = new Router(testLogger, controller);
     router.addRoute("GET", "/simple_get", new DefaultHandler());
     router.addRoute("GET", "/redirect", new RedirectHandler("http://127.0.0.1:5000/simple_get"));
 
     ServerRunnable runnable = new ServerRunnable(socketWrapperSpy, router);
     runnable.run();
 
-    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n", socketWrapperSpy.getSentData());
+    assertEquals("HTTP/1.1 301 MOVED_PERMANENTLY\r\nLOCATION: HTTP://127.0.0.1:5000/SIMPLE_GET\r\n\r\n", socketWrapperSpy.getSentData());
     assertTrue(socketWrapperSpy.wasCloseCalled());
   }
-
 }

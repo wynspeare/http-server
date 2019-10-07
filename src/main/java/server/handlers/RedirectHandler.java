@@ -12,9 +12,10 @@ public class RedirectHandler implements IHandler {
   }
   @Override
   public Response buildResponse(Request request) {
-    Response response = new Response();
-    response.build(StatusCode.Moved_Permanently);
-    response.addHeaders("Location: " + redirectedLocation);
+    Response response = new Response.Builder()
+            .withStatusLine(StatusCode.Moved_Permanently)
+            .withHeader("Location: " + redirectedLocation)
+            .build();
     return response;
   }
 }

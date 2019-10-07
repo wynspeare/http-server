@@ -9,7 +9,6 @@ public class ParseHeaders {
   public ArrayList<String> splitRequest(String incomingRequest) {
     String[] requestHeaders = incomingRequest.split("\n");
     ArrayList<String> headers = new ArrayList<String>(Arrays.asList(requestHeaders));
-    headers.remove(0);
     return headers;
   }
 

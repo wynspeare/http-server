@@ -13,10 +13,12 @@ import java.util.List;
 public class Router {
   public HashMap<String, List<HashMap<Methods, IHandler>>> routes;
   public ILogger serverLogger;
+  public IController controller;
 
-  public Router(ILogger serverLogger) {
+  public Router(ILogger serverLogger, IController controller) {
     routes = new HashMap<>();
     this.serverLogger = serverLogger;
+    this.controller = controller;
   }
 
   public void addRoute(String method, String uri, IHandler handler) {
@@ -42,25 +44,9 @@ public class Router {
     }
   }
 
-  public Response handle(Request request) {
-    Response response = new Response();
-    if (isValidURI(request.getRequestPath())) {
-      List<HashMap<Methods, IHandler>> allowedMethods = routes.get(request.getRequestPath());
-      IHandler handler = getAllowedMethodHandler(allowedMethods, request);
-      response = handler.buildResponse(request);
+    public Response handle(Request request) {
+      return controller.handle(request, routes);
     }
-    return response;
-  }
-
-  public IHandler getAllowedMethodHandler(List<HashMap<Methods, IHandler>> allowedMethods, Request request) {
-    IHandler handler = null;
-    for (HashMap<Methods, IHandler> element : allowedMethods) {
-      if (element.containsKey(request.getMethod())) {
-        handler = element.get(request.getMethod());
-      }
-    }
-    return handler;
-  }
 
   public Methods getMethod(String method) {
     return Methods.valueOf(method);
@@ -74,9 +60,4 @@ public class Router {
       throw new InvalidRequestException("Request Method Not Found", e);
     }
   }
-
-  public boolean isValidURI(String uri) {
-    return routes.containsKey(uri);
-  }
-
 }

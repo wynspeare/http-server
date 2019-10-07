@@ -25,9 +25,9 @@ public class SocketWrapperSpy implements ISocketWrapper {
         return "";
     }
 
-    public void sendData(String data) {
-        output.println(data.toUpperCase());
-        sentData = data.toUpperCase();
+    public void sendData(byte[] data) {
+        output.println(new String(data).toUpperCase());
+        sentData = new String(data).toUpperCase();
     }
 
     public void close() {

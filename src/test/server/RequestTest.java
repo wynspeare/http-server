@@ -4,6 +4,7 @@ import HTTPcomponents.Methods;
 import org.junit.Test;
 import server.request.Request;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static HTTPcomponents.StatusLineComponents.VERSION;
@@ -47,7 +48,7 @@ public class RequestTest {
 
   @Test
   public void requestRetrievesHeadersInMap() {
-    String incomingRequest = "GET /simple_get HTTP/1.1\n" +
+    String incomingRequest = "GET /simple_get HTTP/1.1\r\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +
             "User-Agent: Ruby\n" +
@@ -66,8 +67,8 @@ public class RequestTest {
   }
 
   @Test
-  public void requestReceivesAPOSTAndReturnsTheBody() {
-    String incomingRequest = "POST /simple_get HTTP/1.1\n" +
+  public void requestReceivesAPOSTWithHeadersAndReturnsTheBody() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\r\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +
             "User-Agent: Ruby\n" +
@@ -75,7 +76,7 @@ public class RequestTest {
             "Host: 127.0.0.1:5000\n" +
             "Content-Length: 9\n" +
             "Content-Type: application/x-www-form-urlencoded\n" +
-            "\r\n" +
+            "\r\n\r\n" +
             "some body";
     Request request = new Request(incomingRequest);
 
@@ -83,8 +84,8 @@ public class RequestTest {
   }
 
   @Test
-  public void requestTakesReceivesARequestWithABodyAndReturnsTheHeaders() {
-    String incomingRequest = "POST /simple_get HTTP/1.1\n" +
+  public void requestReceivesARequestWithABodyAndReturnsTheHeaders() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\r\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
             "Accept: */*\n" +
             "User-Agent: Ruby\n" +
@@ -92,7 +93,7 @@ public class RequestTest {
             "Host: 127.0.0.1:5000\n" +
             "Content-Length: 32\n" +
             "Content-Type: application/x-www-form-urlencoded\n" +
-            "\r\n" +
+            "\r\n\r\n" +
             "some body that could be anything";
     Request request = new Request(incomingRequest);
 
@@ -110,9 +111,9 @@ public class RequestTest {
 
   @Test
   public void requestReturnsABodyWithCRLFsInTheBodyString() {
-    String incomingRequest = "POST /simple_get HTTP/1.1\n" +
+    String incomingRequest = "POST /simple_get HTTP/1.1\r\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
-            "\r\n" +
+            "\r\n\r\n" +
             "a body\r\nwith a CRLF line break\r\n!";
     Request request = new Request(incomingRequest);
 
@@ -120,13 +121,22 @@ public class RequestTest {
   }
 
   @Test
-  public void requestTakesInAStatusLineAndReturnsTheRouteForSingleSlash() {
-    String incomingRequest = "POST / HTTP/1.1\n" +
+  public void requestReceivesAPOSTWithHeadersAndReturnsTheBodyAsAByteArray() {
+    String incomingRequest = "POST /simple_get HTTP/1.1\r\n" +
             "Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3\n" +
-            "\r\n" +
-            "a body\r\nwith a CRLF line break\r\n!";
+            "Accept: */*\n" +
+            "User-Agent: Ruby\n" +
+            "Connection: close\n" +
+            "Host: 127.0.0.1:5000\n" +
+            "Content-Length: 9\n" +
+            "Content-Type: application/x-www-form-urlencoded\n" +
+            "\r\n\r\n" +
+            "some body";
     Request request = new Request(incomingRequest);
 
-    assertEquals("/", request.getRequestPath());
+    byte[] expected = "some body".getBytes(StandardCharsets.UTF_8);
+    byte[] output = request.getRequestBodyAsBytes();
+
+    assertArrayEquals(expected, output);
   }
 }

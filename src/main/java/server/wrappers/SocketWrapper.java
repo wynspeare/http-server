@@ -1,42 +1,51 @@
 package server.wrappers;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class SocketWrapper implements ISocketWrapper {
   private BufferedReader input;
-  private PrintWriter output;
+  private DataOutputStream output;
 
   public SocketWrapper(Socket socket) {
     try {
-      this.input = new BufferedReader(
-              new InputStreamReader(socket.getInputStream()));
-      this.output = new PrintWriter(socket.getOutputStream(), true);
+      this.input = new BufferedReader( new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+      this.output = new DataOutputStream(socket.getOutputStream());
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   public String receiveData() {
-    char[] dataBuffer = new char[100];
-    try {
-      String incomingData = "";
-      while(input.ready()) {
-        int value = input.read(dataBuffer);
-        incomingData += new String(dataBuffer,0, value);
+    StringBuilder requestBuilder = new StringBuilder();
+      try {
+        while (input.ready() || requestBuilder.length() == 0) {
+          requestBuilder.append((char) input.read());
+        }
+        String request = requestBuilder.toString();
+        if (request.length() <= 1) {
+          return null;
+        } else {
+          return request;
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      return incomingData;
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      return ex.toString();
-    }
+    return null;
   }
 
-  public void sendData(String data) {
-    output.print(data);
+
+  public void sendData(byte[] data) {
+    try {
+      output.write(data);
+      output.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void close() {
